@@ -23,9 +23,10 @@ from sklearn.metrics import mean_squared_error
 from sklearn.neighbors import KNeighborsRegressor
 from pprint import pp
 
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 
 # %%
+# create toy dataset using make_regression function from sklearn.datasets
 toy_dataset = make_regression(n_samples=200, n_features=25, random_state=42, coef=False)
 X = toy_dataset[0]
 y = toy_dataset[1]
@@ -34,6 +35,7 @@ y = toy_dataset[1]
 # ### Explore toy dataset
 
 # %%
+# The shape should show number of samples and number of features for X, and number of samples for y
 print("Shape of X:", X.shape)
 print("Shape of y:", y.shape)
 
@@ -74,6 +76,11 @@ def chebyshev_distance(x, y) -> float:
 
 # %%
 class KNNRegressor:
+    """
+    A custom implementation of the K-Nearest Neighbors (KNN) regression algorithm from scratch.
+    This is based on the implementation given in the class notebook. The prediction method is the only thing changed.
+    Changed from taking maximum number of neighbours to averaging them
+    """
     def __init__(self, k=3, distance_metric='euclidean', p=2, weighted=False):
         self.k = k
         self.distance_metric = distance_metric
@@ -102,6 +109,7 @@ class KNNRegressor:
             if self.weighted:
                 k_distances = [distances[i] for i in k_indices]
                 weights = 1 / (np.array(k_distances) + 1e-8)  # Avoid division by zero
+                # Perform weighted average of the k nearest labels
                 prediction = np.average(k_nearest_labels, weights=weights)
             else:
                 prediction = np.mean(k_nearest_labels)
@@ -119,6 +127,7 @@ class KNNRegressor:
 k_values = [3, 7, 11]
 d_values = [2, 1, 5]
 
+# Dictionary to store results for non-weighted KNN Regressor
 results_data_non_weighted = {}
 
 for k in k_values:
@@ -142,6 +151,7 @@ for k in k_values:
 # ### Weighted KNN regression implementation
 
 # %%
+# Dictionary to store results for weighted KNN Regressor
 results_data_weighted = {}
 
 for k in k_values:
@@ -165,6 +175,7 @@ for k in k_values:
 # ### Show all results
 
 # %%
+# Show raw results for all combinations of k and d
 print("Non-weighted KNN Regression Results:")
 pp(results_data_non_weighted)
 
