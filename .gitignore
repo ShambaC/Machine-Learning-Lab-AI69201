@@ -222,3 +222,4 @@ __marimo__/
 # project specific stuff
 .agents
 skills-lock.json
+tmp
